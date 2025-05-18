@@ -1,0 +1,60 @@
+# AMAS Configuration
+
+# --- LLM Service Configuration ---
+llm_service_gemini:
+  type: gemini          # Specifies which LLM service implementation to use (currently only 'gemini' supported)
+  # api_key: YOUR_API_KEY # Optional: Can be set here, but reading from GOOGLE_API_KEY env var is preferred
+  model: gemini-2.0-flash     # Default model for all agents unless overridden in agent config
+  generation_params:    # Default parameters passed to the Gemini model's generation config
+    temperature: 0.6
+    # top_p: 0.9        # Example: uncomment or add other supported params
+    # max_output_tokens: 2048 # Example
+
+# --- Agent Definitions ---
+# Define the agents to be initialized by the orchestrator.
+# The 'type' must match the name used in the @register_agent decorator in the agent's file.
+agents:
+  planner:              # Unique name for this agent instance
+    type: planner       # Corresponds to @register_agent('planner')
+    # model: gemini-1.5-pro-latest # Optional: Override the default model specifically for the planner
+    # temperature: 0.7             # Optional: Override default temperature for the planner
+    # Add any other planner-specific configuration key-value pairs here
+    role_description: "You are a meticulous planner agent. Your goal is to break down complex tasks into a sequence of actionable steps for other agents (like a coder) or tool calls."
+
+  coder:                # Unique name for this agent instance
+    type: coder         # Corresponds to @register_agent('coder')
+    # Add any coder-specific configuration key-value pairs here
+    role_description: "You are a skilled coder agent. You receive specific coding tasks or steps from the planner and generate the corresponding code. You can use file system tools to write the code to files."
+
+
+  decider:              # Unique name for this agent instance
+    type: decider       # Corresponds to @register_agent('decider')
+    role_description: "You are a decision-making agent. You analyze the plan step provided by the planner and determine the best way to instruct the coder (e.g., full rewrite vs. targeted changes, specific approach). You refine the instructions for clarity and actionability."
+    # Add any decider-specific configuration if needed in the future
+
+# --- Primary Agent ---
+# Specify which agent instance should receive the initial task from the user.
+primary_agent: planner
+
+# --- File Operations ---
+# Optional: Specify a base directory for file system tools (read, write, delete).
+# If commented out or missing, defaults to the project's root directory.
+# file_operations:
+#  base_dir: ./workspace # Example: All file operations happen inside a 'workspace' subfolder
+
+# --- Tool Permissions ---
+# Optional: Configure permissions for tool usage. Structure depends on PermissionsManager.
+# Example (assuming PermissionsManager supports these keys):
+# permissions:
+#   # List of tools allowed without asking for user confirmation
+#   allowed_tools: 
+#     - file_read
+#     - file_write
+#     - file_exists
+#     - file_append
+#   # List of tools that require explicit user confirmation (y/n prompt) before execution
+#   require_confirmation: 
+#     - file_delete
+#     - execute_command 
+#   # List of tools that are completely forbidden (will always raise PermissionError)
+#   # denied_tools: []

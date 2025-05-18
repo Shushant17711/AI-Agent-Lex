@@ -1,0 +1,368 @@
+{
+    "task": "Directory Context (Working Directory Files):\n- snake.py\n\nUser Task:\nsolve indentation error in snake game",
+    "plan": {
+        "0": {
+            "step_id": 1,
+            "agent": "coder",
+            "action": "read_file",
+            "parameters": {
+                "path": "snake.py"
+            },
+            "status": "success",
+            "result": {
+                "step_id": 1,
+                "action": "read_file",
+                "parameters": {
+                    "path": "snake.py"
+                },
+                "agent": "coder",
+                "attempt": 1,
+                "status": "success",
+                "content": "import pygame\nimport random\n\n# Initialize Pygame\npygame.init()\n\n# Screen dimensions\nscreen_width = 600\nscreen_height = 480\nscreen = pygame.display.set_mode((screen_width, screen_height))\npygame.display.set_caption(\"Snake Game\")\n\n# Colors\nblack = (0, 0, 0)\nwhite = (255, 255, 255)\nred = (255, 0, 0)\ngreen = (0, 255, 0)\n\n# Snake block size\nsnake_block = 10\n\n# Snake speed\nsnake_speed = 15\n\n# Font\nfont_style = pygame.font.SysFont(None, 30)\nscore_font = pygame.font.SysFont(None, 35)\n\n\ndef your_score(score):\n    value = score_font.render(\"Your Score: \" + str(score), True, white)\n    screen.blit(value, [0, 0])\n\n\ndef our_snake(snake_block, snake_list):\n    for x in snake_list:\n        pygame.draw.rect(screen, green, [x[0], x[1], snake_block, snake_block])\n\n\ndef message(msg, color):\n    mesg = font_style.render(msg, True, color)\n    screen.blit(mesg, [screen_width / 6, screen_height / 3])\n\n\ndef game_loop():\n    game_over = False\n    game_close = False\n\n    x1 = screen_width / 2\nx1 = screen_width / 2\n    x1 = screen_width / 2\n\n    x1_change = 0\n    y1_change = 0\n\n    snake_List = []\n    Length_of_snake = 1\n\n    # Food position\n    foodx = round(random.randrange(0, screen_width - snake_block) / 10.0) * 10.0\n    foody = round(random.randrange(0, screen_height - snake_block) / 10.0) * 10.0\n\n    clock = pygame.time.Clock()\n\n    while not game_over:\n\n        while game_close == True:\n            screen.fill(black)\n            message(\"You Lost! Press C-Play Again or Q-Quit\", red)\n            your_score(Length_of_snake - 1)\n            pygame.display.update()\n\n            for event in pygame.event.get():\n                if event.type == pygame.KEYDOWN:\n                    if event.key == pygame.K_q:\n                        game_over = True\n                        game_close = False\n                    if event.key == pygame.K_c:\n            if event.type == pygame.KEYDOWN:\n\n        for event in pygame.event.get():\n            if event.type == pygame.QUIT:\n                game_over = True\n            if event.type == pygame.KEYDOWN:\n                if event.key == pygame.K_LEFT:\n                    x1_change = -snake_block\n                    y1_change = 0\n            Length_of_snake -= 1\n                    x1_change = snake_block\n                    y1_change = 0\n                elif event.key == pygame.K_UP:\n                    y1_change = -snake_block\n                    x1_change = 0\n                elif event.key == pygame.K_DOWN:\n                    y1_change = snake_block\n                    x1_change = 0\n\n            Length_of_snake += 1\n\n        clock.tick(snake_speed)\n            game_close = True\n\n        x1 += x1_change\n        y1 += y1_change\n        screen.fill(black)\n        pygame.draw.rect(screen, red, [foodx, foody, snake_block, snake_block])\n        snake_Head = []\n        snake_Head.append(x1)\n        snake_Head.append(y1)\n        snake_List.append(snake_Head)\n        if len(snake_List) > Length_of_snake:\n            del snake_List[0]\n\n        for x in snake_List[:-1]:\n            if x == snake_Head:\n                game_close = True\n\n        our_snake(snake_block, snake_List)\n        your_score(Length_of_snake - 1)\n\n        pygame.display.update()\n\n        if x1 == foodx and y1 == foody:\n    game_loop()\n    pygame.quit()\n            Length_of_snake += 1\n\n        clock.tick(snake_speed)\n\n    game_loop()\n    quit()\n\n\n    game_loop()\n"
+            }
+        },
+        "1": {
+            "step_id": 2,
+            "agent": "coder",
+            "action": "analyze_content",
+            "parameters": {
+                "path": "snake.py",
+                "analysis_query": "Verify that this file contains a Python snake game implementation (look for 'pygame' and 'class Snake')."
+            },
+            "status": "success",
+            "result": {
+                "step_id": 2,
+                "action": "analyze_content",
+                "parameters": {
+                    "path": "snake.py",
+                    "analysis_query": "Verify that this file contains a Python snake game implementation (look for 'pygame' and 'class Snake')."
+                },
+                "agent": "coder",
+                "attempt": 1,
+                "status": "success",
+                "analysis_result": "The code uses `pygame` but does not define a `class Snake`. Therefore, it's a snake game implementation using `pygame`, but not using a `Snake` class.",
+                "query": "Verify that this file contains a Python snake game implementation (look for 'pygame' and 'class Snake')."
+            }
+        },
+        "2": {
+            "step_id": 3,
+            "agent": "planner",
+            "action": "decide_edit_strategy",
+            "parameters": {
+                "analysis_result": "[Analysis result from step 2]",
+                "task_goal": "Solve indentation error in snake game"
+            },
+            "status": "success",
+            "result": {
+                "step_id": 3,
+                "action": "decide_edit_strategy",
+                "parameters": {
+                    "analysis_result": "[Analysis result from step 2]",
+                    "task_goal": "Solve indentation error in snake game"
+                },
+                "agent": "planner",
+                "attempt": 1,
+                "status": "success",
+                "strategy": "apply_diff",
+                "message": "Edit strategy decided: apply_diff"
+            }
+        },
+        "3": {
+            "step_id": 4,
+            "agent": "coder",
+            "action": "generate_code_diff",
+            "parameters": {
+                "path": "snake.py",
+                "change_description": "Fix any indentation errors in the snake game code.",
+                "strategy": "apply_diff"
+            },
+            "status": "generated_diff_info",
+            "result": {
+                "step_id": 4,
+                "action": "generate_code_diff",
+                "parameters": {
+                    "path": "snake.py",
+                    "change_description": "Fix any indentation errors in the snake game code.",
+                    "strategy": "apply_diff"
+                },
+                "agent": "coder",
+                "attempt": 1,
+                "diff_info": {
+                    "start_line": 44,
+                    "end_line": 45,
+                    "new_code": "    x1 = screen_width / 2\n    y1 = screen_height / 2"
+                },
+                "status": "generated_diff_info"
+            }
+        },
+        "5": {
+            "step_id": 6,
+            "agent": "coder",
+            "action": "execute_command",
+            "parameters": {
+                "command": "black snake.py"
+            },
+            "status": "error",
+            "result": {
+                "step_id": 6,
+                "action": "execute_command",
+                "parameters": {
+                    "command": "black snake.py"
+                },
+                "agent": "coder",
+                "attempt": 2,
+                "status": "error",
+                "message": "Coder error processing action 'execute_command': Failed to execute command 'black snake.py': Tool 'execute_command' failed: [Subprocess] Command failed with exit code 123. Stderr: error: cannot format snake.py: Cannot parse: 51:0:     x1 = screen_width / 2\n\nOh no! \\U0001f4a5 \\U0001f494 \\U0001f4a5\n1 file failed to reformat."
+            }
+        }
+    },
+    "execution": {
+        "status": "failed",
+        "failed_step_id": 6,
+        "results": [
+            {
+                "step_id": 1,
+                "action": "read_file",
+                "parameters": {
+                    "path": "snake.py"
+                },
+                "agent": "coder",
+                "attempt": 1,
+                "status": "success",
+                "content": "import pygame\nimport random\n\n# Initialize Pygame\npygame.init()\n\n# Screen dimensions\nscreen_width = 600\nscreen_height = 480\nscreen = pygame.display.set_mode((screen_width, screen_height))\npygame.display.set_caption(\"Snake Game\")\n\n# Colors\nblack = (0, 0, 0)\nwhite = (255, 255, 255)\nred = (255, 0, 0)\ngreen = (0, 255, 0)\n\n# Snake block size\nsnake_block = 10\n\n# Snake speed\nsnake_speed = 15\n\n# Font\nfont_style = pygame.font.SysFont(None, 30)\nscore_font = pygame.font.SysFont(None, 35)\n\n\ndef your_score(score):\n    value = score_font.render(\"Your Score: \" + str(score), True, white)\n    screen.blit(value, [0, 0])\n\n\ndef our_snake(snake_block, snake_list):\n    for x in snake_list:\n        pygame.draw.rect(screen, green, [x[0], x[1], snake_block, snake_block])\n\n\ndef message(msg, color):\n    mesg = font_style.render(msg, True, color)\n    screen.blit(mesg, [screen_width / 6, screen_height / 3])\n\n\ndef game_loop():\n    game_over = False\n    game_close = False\n\n    x1 = screen_width / 2\nx1 = screen_width / 2\n    x1 = screen_width / 2\n\n    x1_change = 0\n    y1_change = 0\n\n    snake_List = []\n    Length_of_snake = 1\n\n    # Food position\n    foodx = round(random.randrange(0, screen_width - snake_block) / 10.0) * 10.0\n    foody = round(random.randrange(0, screen_height - snake_block) / 10.0) * 10.0\n\n    clock = pygame.time.Clock()\n\n    while not game_over:\n\n        while game_close == True:\n            screen.fill(black)\n            message(\"You Lost! Press C-Play Again or Q-Quit\", red)\n            your_score(Length_of_snake - 1)\n            pygame.display.update()\n\n            for event in pygame.event.get():\n                if event.type == pygame.KEYDOWN:\n                    if event.key == pygame.K_q:\n                        game_over = True\n                        game_close = False\n                    if event.key == pygame.K_c:\n            if event.type == pygame.KEYDOWN:\n\n        for event in pygame.event.get():\n            if event.type == pygame.QUIT:\n                game_over = True\n            if event.type == pygame.KEYDOWN:\n                if event.key == pygame.K_LEFT:\n                    x1_change = -snake_block\n                    y1_change = 0\n            Length_of_snake -= 1\n                    x1_change = snake_block\n                    y1_change = 0\n                elif event.key == pygame.K_UP:\n                    y1_change = -snake_block\n                    x1_change = 0\n                elif event.key == pygame.K_DOWN:\n                    y1_change = snake_block\n                    x1_change = 0\n\n            Length_of_snake += 1\n\n        clock.tick(snake_speed)\n            game_close = True\n\n        x1 += x1_change\n        y1 += y1_change\n        screen.fill(black)\n        pygame.draw.rect(screen, red, [foodx, foody, snake_block, snake_block])\n        snake_Head = []\n        snake_Head.append(x1)\n        snake_Head.append(y1)\n        snake_List.append(snake_Head)\n        if len(snake_List) > Length_of_snake:\n            del snake_List[0]\n\n        for x in snake_List[:-1]:\n            if x == snake_Head:\n                game_close = True\n\n        our_snake(snake_block, snake_List)\n        your_score(Length_of_snake - 1)\n\n        pygame.display.update()\n\n        if x1 == foodx and y1 == foody:\n    game_loop()\n    pygame.quit()\n            Length_of_snake += 1\n\n        clock.tick(snake_speed)\n\n    game_loop()\n    quit()\n\n\n    game_loop()\n"
+            },
+            {
+                "step_id": 2,
+                "action": "analyze_content",
+                "parameters": {
+                    "path": "snake.py",
+                    "analysis_query": "Verify that this file contains a Python snake game implementation (look for 'pygame' and 'class Snake')."
+                },
+                "agent": "coder",
+                "attempt": 1,
+                "status": "success",
+                "analysis_result": "The code uses `pygame` but does not define a `class Snake`. Therefore, it's a snake game implementation using `pygame`, but not using a `Snake` class.",
+                "query": "Verify that this file contains a Python snake game implementation (look for 'pygame' and 'class Snake')."
+            },
+            {
+                "step_id": 3,
+                "action": "decide_edit_strategy",
+                "parameters": {
+                    "analysis_result": "[Analysis result from step 2]",
+                    "task_goal": "Solve indentation error in snake game"
+                },
+                "agent": "planner",
+                "attempt": 1,
+                "status": "success",
+                "strategy": "apply_diff",
+                "message": "Edit strategy decided: apply_diff"
+            },
+            {
+                "step_id": 4,
+                "action": "generate_code_diff",
+                "parameters": {
+                    "path": "snake.py",
+                    "change_description": "Fix any indentation errors in the snake game code.",
+                    "strategy": "apply_diff"
+                },
+                "agent": "coder",
+                "attempt": 1,
+                "diff_info": {
+                    "start_line": 44,
+                    "end_line": 45,
+                    "new_code": "    x1 = screen_width / 2\n    y1 = screen_height / 2"
+                },
+                "status": "generated_diff_info"
+            },
+            {
+                "step_id": 5,
+                "action": "apply_diff",
+                "parameters": {
+                    "path": "snake.py",
+                    "diff": "[Diff generated in step 4]"
+                },
+                "agent": "coder",
+                "attempt": 1,
+                "status": "success",
+                "message": "Diff applied successfully to snake.py (3565 bytes)"
+            },
+            {
+                "step_id": 6,
+                "action": "execute_command",
+                "parameters": {
+                    "command": "black snake.py"
+                },
+                "agent": "coder",
+                "attempt": 2,
+                "status": "error",
+                "message": "Coder error processing action 'execute_command': Failed to execute command 'black snake.py': Tool 'execute_command' failed: [Subprocess] Command failed with exit code 123. Stderr: error: cannot format snake.py: Cannot parse: 51:0:     x1 = screen_width / 2\n\nOh no! \\U0001f4a5 \\U0001f494 \\U0001f4a5\n1 file failed to reformat."
+            }
+        ]
+    },
+    "workspace": {
+        "directory_listing": [
+            "snake.py"
+        ],
+        "base_dir": "C:\\Users\\Admin\\Desktop\\New folder (3)"
+    },
+    "errors": [
+        "Failed to initialize agent 'planner': PlannerAgent.__init__() got an unexpected keyword argument 'base_dir'",
+        "Primary agent 'planner' not found."
+    ],
+    "current_plan": {
+        "original_task": "Current working directory (C:\\Users\\Admin\\Desktop\\New folder (3)) contains:\n- snake.py\n\nUser Task: Directory Context (Working Directory Files):\n- snake.py\n\nUser Task:\nsolve indentation error in snake game",
+        "steps": [
+            {
+                "step_id": 1,
+                "agent": "coder",
+                "action": "read_file",
+                "parameters": {
+                    "path": "snake.py"
+                },
+                "status": "success",
+                "result": {
+                    "step_id": 1,
+                    "action": "read_file",
+                    "parameters": {
+                        "path": "snake.py"
+                    },
+                    "agent": "coder",
+                    "attempt": 1,
+                    "status": "success",
+                    "content": "import pygame\nimport random\n\n# Initialize Pygame\npygame.init()\n\n# Screen dimensions\nscreen_width = 600\nscreen_height = 480\nscreen = pygame.display.set_mode((screen_width, screen_height))\npygame.display.set_caption(\"Snake Game\")\n\n# Colors\nblack = (0, 0, 0)\nwhite = (255, 255, 255)\nred = (255, 0, 0)\ngreen = (0, 255, 0)\n\n# Snake block size\nsnake_block = 10\n\n# Snake speed\nsnake_speed = 15\n\n# Font\nfont_style = pygame.font.SysFont(None, 30)\nscore_font = pygame.font.SysFont(None, 35)\n\n\ndef your_score(score):\n    value = score_font.render(\"Your Score: \" + str(score), True, white)\n    screen.blit(value, [0, 0])\n\n\ndef our_snake(snake_block, snake_list):\n    for x in snake_list:\n        pygame.draw.rect(screen, green, [x[0], x[1], snake_block, snake_block])\n\n\ndef message(msg, color):\n    mesg = font_style.render(msg, True, color)\n    screen.blit(mesg, [screen_width / 6, screen_height / 3])\n\n\ndef game_loop():\n    game_over = False\n    game_close = False\n\n    x1 = screen_width / 2\nx1 = screen_width / 2\n    x1 = screen_width / 2\n\n    x1_change = 0\n    y1_change = 0\n\n    snake_List = []\n    Length_of_snake = 1\n\n    # Food position\n    foodx = round(random.randrange(0, screen_width - snake_block) / 10.0) * 10.0\n    foody = round(random.randrange(0, screen_height - snake_block) / 10.0) * 10.0\n\n    clock = pygame.time.Clock()\n\n    while not game_over:\n\n        while game_close == True:\n            screen.fill(black)\n            message(\"You Lost! Press C-Play Again or Q-Quit\", red)\n            your_score(Length_of_snake - 1)\n            pygame.display.update()\n\n            for event in pygame.event.get():\n                if event.type == pygame.KEYDOWN:\n                    if event.key == pygame.K_q:\n                        game_over = True\n                        game_close = False\n                    if event.key == pygame.K_c:\n            if event.type == pygame.KEYDOWN:\n\n        for event in pygame.event.get():\n            if event.type == pygame.QUIT:\n                game_over = True\n            if event.type == pygame.KEYDOWN:\n                if event.key == pygame.K_LEFT:\n                    x1_change = -snake_block\n                    y1_change = 0\n            Length_of_snake -= 1\n                    x1_change = snake_block\n                    y1_change = 0\n                elif event.key == pygame.K_UP:\n                    y1_change = -snake_block\n                    x1_change = 0\n                elif event.key == pygame.K_DOWN:\n                    y1_change = snake_block\n                    x1_change = 0\n\n            Length_of_snake += 1\n\n        clock.tick(snake_speed)\n            game_close = True\n\n        x1 += x1_change\n        y1 += y1_change\n        screen.fill(black)\n        pygame.draw.rect(screen, red, [foodx, foody, snake_block, snake_block])\n        snake_Head = []\n        snake_Head.append(x1)\n        snake_Head.append(y1)\n        snake_List.append(snake_Head)\n        if len(snake_List) > Length_of_snake:\n            del snake_List[0]\n\n        for x in snake_List[:-1]:\n            if x == snake_Head:\n                game_close = True\n\n        our_snake(snake_block, snake_List)\n        your_score(Length_of_snake - 1)\n\n        pygame.display.update()\n\n        if x1 == foodx and y1 == foody:\n    game_loop()\n    pygame.quit()\n            Length_of_snake += 1\n\n        clock.tick(snake_speed)\n\n    game_loop()\n    quit()\n\n\n    game_loop()\n"
+                }
+            },
+            {
+                "step_id": 2,
+                "agent": "coder",
+                "action": "analyze_content",
+                "parameters": {
+                    "path": "snake.py",
+                    "analysis_query": "Verify that this file contains a Python snake game implementation (look for 'pygame' and 'class Snake')."
+                },
+                "status": "success",
+                "result": {
+                    "step_id": 2,
+                    "action": "analyze_content",
+                    "parameters": {
+                        "path": "snake.py",
+                        "analysis_query": "Verify that this file contains a Python snake game implementation (look for 'pygame' and 'class Snake')."
+                    },
+                    "agent": "coder",
+                    "attempt": 1,
+                    "status": "success",
+                    "analysis_result": "The code uses `pygame` but does not define a `class Snake`. Therefore, it's a snake game implementation using `pygame`, but not using a `Snake` class.",
+                    "query": "Verify that this file contains a Python snake game implementation (look for 'pygame' and 'class Snake')."
+                }
+            },
+            {
+                "step_id": 3,
+                "agent": "planner",
+                "action": "decide_edit_strategy",
+                "parameters": {
+                    "analysis_result": "[Analysis result from step 2]",
+                    "task_goal": "Solve indentation error in snake game"
+                },
+                "status": "success",
+                "result": {
+                    "step_id": 3,
+                    "action": "decide_edit_strategy",
+                    "parameters": {
+                        "analysis_result": "[Analysis result from step 2]",
+                        "task_goal": "Solve indentation error in snake game"
+                    },
+                    "agent": "planner",
+                    "attempt": 1,
+                    "status": "success",
+                    "strategy": "apply_diff",
+                    "message": "Edit strategy decided: apply_diff"
+                }
+            },
+            {
+                "step_id": 4,
+                "agent": "coder",
+                "action": "generate_code_diff",
+                "parameters": {
+                    "path": "snake.py",
+                    "change_description": "Fix any indentation errors in the snake game code.",
+                    "strategy": "apply_diff"
+                },
+                "status": "generated_diff_info",
+                "result": {
+                    "step_id": 4,
+                    "action": "generate_code_diff",
+                    "parameters": {
+                        "path": "snake.py",
+                        "change_description": "Fix any indentation errors in the snake game code.",
+                        "strategy": "apply_diff"
+                    },
+                    "agent": "coder",
+                    "attempt": 1,
+                    "diff_info": {
+                        "start_line": 44,
+                        "end_line": 45,
+                        "new_code": "    x1 = screen_width / 2\n    y1 = screen_height / 2"
+                    },
+                    "status": "generated_diff_info"
+                }
+            },
+            {
+                "step_id": 5,
+                "agent": "coder",
+                "action": "apply_diff",
+                "parameters": {
+                    "path": "snake.py",
+                    "diff": "[Diff generated in step 4]"
+                },
+                "status": "success",
+                "result": {
+                    "step_id": 5,
+                    "action": "apply_diff",
+                    "parameters": {
+                        "path": "snake.py",
+                        "diff": "[Diff generated in step 4]"
+                    },
+                    "agent": "coder",
+                    "attempt": 1,
+                    "status": "success",
+                    "message": "Diff applied successfully to snake.py (3565 bytes)"
+                }
+            },
+            {
+                "step_id": 6,
+                "agent": "coder",
+                "action": "execute_command",
+                "parameters": {
+                    "command": "black snake.py"
+                },
+                "status": "pending",
+                "result": null
+            }
+        ],
+        "status": "draft",
+        "style": "step-by-step"
+    },
+    "file_content_subway_surfer": {
+        "py": "import pygame\nimport random\nimport sys\nimport tkinter as tk\nfrom tkinter import messagebox\n\n# Initialize Pygame\npygame.init()\n\n# Screen dimensions\nscreen_width = 800\nscreen_height = 600\nscreen = pygame.display.set_mode((screen_width, screen_height))\npygame.display.set_caption(\"Subway Surfer\")\n\n# Colors\nwhite = (255, 255, 255)\nblack = (0, 0, 0)\nred = (255, 0, 0)\ngreen = (0, 255, 0)\nblue = (0, 0, 255)\n\n# Player properties\nplayer_x = 100\nplayer_y = 450\nplayer_speed = 5\nplayer_width = 50\nplayer_height = 100\nplayer_lane = 1  # 0: left, 1: middle, 2: right\nplayer_lanes_x = [100, 350, 600]  # x-coordinates for each lane\nplayer_rect = pygame.Rect(player_x, player_y, player_width, player_height)\n\n# Obstacle properties\nobstacle_width = 50\nobstacle_height = 50\nobstacle_speed = 5\nobstacles = []\n\n# Game properties\nscore = 0\nfont = pygame.font.Font(None, 36)\nclock = pygame.time.Clock()\ngame_over = False\n\n# Function to generate obstacles\ndef generate_obstacle():\n    lane = random.randint(0, 2)\n    x = player_lanes_x[lane]\n    y = -obstacle_height\n    obstacles.append(pygame.Rect(x, y, obstacle_width, obstacle_height))\n\n# Function to move obstacles\ndef move_obstacles(obstacle_speed):\n    for obstacle in obstacles:\n        obstacle.y += obstacle_speed\n\n# Function to draw obstacles\ndef draw_obstacles():\n    for obstacle in obstacles:\n        pygame.draw.rect(screen, red, obstacle)\n\n# Function to move player\ndef move_player(direction):\n    global player_lane, player_x\n    if direction == \"left\" and player_lane > 0:\n        player_lane -= 1\n    elif direction == \"right\" and player_lane < 2:\n        player_lane += 1\n    player_x = player_lanes_x[player_lane]\n    player_rect.x = player_x\n\n# Function to check for collisions\ndef check_collision():\n    global game_over\n    for obstacle in obstacles:\n        if player_rect.colliderect(obstacle):\n            game_over = True\n            break\n\n# Function to display score\ndef display_score():\n    text = font.render(\"Score: \" + str(score), True, black)\n    screen.blit(text, (10, 10))\n\n# Function to display game over screen\ndef display_game_over():\n    text = font.render(\"Game Over! Score: \" + str(score), True, black)\n    text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))\n    screen.blit(text, text_rect)\n\n    restart_text = font.render(\"Press SPACE to restart\", True, black)\n    restart_rect = restart_text.get_rect(center=(screen_width // 2, screen_height // 2 + 50))\n    screen.blit(restart_text, restart_rect)\n\n# Game loop\nobstacle_timer = 0\nobstacle_interval = 60  # frames\ngame_speed = 5 # Initial game speed\ngame_speed_increase_interval = 5000 # Increase speed every 5 seconds\nlast_speed_increase_time = pygame.time.get_ticks()\n\nrunning = True\nwhile running:\n    # Event handling\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            running = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_LEFT:\n                move_player(\"left\")\n            if event.key == pygame.K_RIGHT:\n                move_player(\"right\")\n            if game_over and event.key == pygame.K_SPACE:\n                # Reset game\n                game_over = False\n                score = 0\n                player_lane = 1\n                player_x = player_lanes_x[player_lane]\n                player_rect.x = player_x\n                obstacles = []\n                game_speed = 5\n                last_speed_increase_time = pygame.time.get_ticks()\n\n    if not game_over:\n        # Obstacle generation\n        obstacle_timer += 1\n        if obstacle_timer >= obstacle_interval:\n            generate_obstacle()\n            obstacle_timer = 0\n\n        # Move obstacles\n        move_obstacles(game_speed)\n\n        # Check for collisions\n        check_collision()\n\n        # Update score\n        score += 1\n\n        # Remove obstacles that have gone off-screen\n        obstacles = [obstacle for obstacle in obstacles if obstacle.y < screen_height]\n\n        # Increase game speed over time\n        current_time = pygame.time.get_ticks()\n        if current_time - last_speed_increase_time >= game_speed_increase_interval:\n            game_speed += 1\n            last_speed_increase_time = current_time\n\n        # Drawing\n        screen.fill(white)\n        pygame.draw.rect(screen, blue, player_rect)\n        draw_obstacles()\n        display_score()\n\n    else:\n        # Game over screen\n        screen.fill(white)\n        display_game_over()\n\n    # Update display\n    pygame.display.flip()\n\n    # Control game speed\n    clock.tick(60)\n\n# Quit Pygame\npygame.quit()\nsys.exit()"
+    },
+    "latest_generated_code": {
+        "action": "generate_code_diff",
+        "parameters": {
+            "path": "snake.py",
+            "change_description": "Fix any indentation errors in the snake game code.",
+            "strategy": "apply_diff"
+        },
+        "diff_info": {
+            "start_line": 44,
+            "end_line": 45,
+            "new_code": "    x1 = screen_width / 2\n    y1 = screen_height / 2"
+        },
+        "status": "generated_diff_info"
+    },
+    "file_content_snake": {
+        "py": "import pygame\nimport random\n\n# Initialize Pygame\npygame.init()\n\n# Screen dimensions\nscreen_width = 600\nscreen_height = 480\nscreen = pygame.display.set_mode((screen_width, screen_height))\npygame.display.set_caption(\"Snake Game\")\n\n# Colors\nblack = (0, 0, 0)\nwhite = (255, 255, 255)\nred = (255, 0, 0)\ngreen = (0, 255, 0)\n\n# Snake block size\nsnake_block = 10\n\n# Snake speed\nsnake_speed = 15\n\n# Font\nfont_style = pygame.font.SysFont(None, 30)\nscore_font = pygame.font.SysFont(None, 35)\n\n\ndef your_score(score):\n    value = score_font.render(\"Your Score: \" + str(score), True, white)\n    screen.blit(value, [0, 0])\n\n\ndef our_snake(snake_block, snake_list):\n    for x in snake_list:\n        pygame.draw.rect(screen, green, [x[0], x[1], snake_block, snake_block])\n\n\ndef message(msg, color):\n    mesg = font_style.render(msg, True, color)\n    screen.blit(mesg, [screen_width / 6, screen_height / 3])\n\n\ndef game_loop():\n    game_over = False\n    game_close = False\n\n    x1 = screen_width / 2\nx1 = screen_width / 2\n    x1 = screen_width / 2\n\n    x1_change = 0\n    y1_change = 0\n\n    snake_List = []\n    Length_of_snake = 1\n\n    # Food position\n    foodx = round(random.randrange(0, screen_width - snake_block) / 10.0) * 10.0\n    foody = round(random.randrange(0, screen_height - snake_block) / 10.0) * 10.0\n\n    clock = pygame.time.Clock()\n\n    while not game_over:\n\n        while game_close == True:\n            screen.fill(black)\n            message(\"You Lost! Press C-Play Again or Q-Quit\", red)\n            your_score(Length_of_snake - 1)\n            pygame.display.update()\n\n            for event in pygame.event.get():\n                if event.type == pygame.KEYDOWN:\n                    if event.key == pygame.K_q:\n                        game_over = True\n                        game_close = False\n                    if event.key == pygame.K_c:\n            if event.type == pygame.KEYDOWN:\n\n        for event in pygame.event.get():\n            if event.type == pygame.QUIT:\n                game_over = True\n            if event.type == pygame.KEYDOWN:\n                if event.key == pygame.K_LEFT:\n                    x1_change = -snake_block\n                    y1_change = 0\n            Length_of_snake -= 1\n                    x1_change = snake_block\n                    y1_change = 0\n                elif event.key == pygame.K_UP:\n                    y1_change = -snake_block\n                    x1_change = 0\n                elif event.key == pygame.K_DOWN:\n                    y1_change = snake_block\n                    x1_change = 0\n\n            Length_of_snake += 1\n\n        clock.tick(snake_speed)\n            game_close = True\n\n        x1 += x1_change\n        y1 += y1_change\n        screen.fill(black)\n        pygame.draw.rect(screen, red, [foodx, foody, snake_block, snake_block])\n        snake_Head = []\n        snake_Head.append(x1)\n        snake_Head.append(y1)\n        snake_List.append(snake_Head)\n        if len(snake_List) > Length_of_snake:\n            del snake_List[0]\n\n        for x in snake_List[:-1]:\n            if x == snake_Head:\n                game_close = True\n\n        our_snake(snake_block, snake_List)\n        your_score(Length_of_snake - 1)\n\n        pygame.display.update()\n\n        if x1 == foodx and y1 == foody:\n    game_loop()\n    pygame.quit()\n            Length_of_snake += 1\n\n        clock.tick(snake_speed)\n\n    game_loop()\n    quit()\n\n\n    game_loop()\n"
+    },
+    "file_content_tic_tac_toe": {
+        "py": "def print_board(board):\n    \"\"\"Prints the Tic-Tac-Toe board.\"\"\"\n    for row in board:\n        print(\"|\".join(row))\n        print(\"-\" * 5)\n\ndef check_winner(board, player):\n    \"\"\"Checks if the player has won the game.\"\"\"\n    # Check rows\n    for row in board:\n        if all(cell == player for cell in row):\n            return True\n\n    # Check columns\n    for col in range(3):\n        if all(board[row][col] == player for row in range(3)):\n            return True\n\n    # Check diagonals\n    if all(board[i][i] == player for i in range(3)):\n        return True\n    if all(board[i][2 - i] == player for i in range(3)):\n        return True\n\n    return False\n\ndef is_board_full(board):\n    \"\"\"Checks if the board is full.\"\"\"\n    return all(cell != \" \" for row in board for cell in row)\n\ndef get_player_move(board):\n    \"\"\"Gets the player's move.\"\"\"\n    while True:\n        try:\n            row = int(input(\"Enter row (0-2): \"))\n            col = int(input(\"Enter column (0-2): \"))\n            if not (0 <= row <= 2 and 0 <= col <= 2):\n                print(\"Invalid input. Row and column must be between 0 and 2.\")\n                continue\n            if board[row][col] != \" \":\n                print(\"That cell is already occupied. Try again.\")\n                continue\n            return row, col\n        except ValueError:\n            print(\"Invalid input. Please enter numbers.\")\n\ndef play_tic_tac_toe():\n    \"\"\"Plays a game of Tic-Tac-Toe.\"\"\"\n    board = [[\" \" for _ in range(3)] for _ in range(3)]\n    player = \"X\"\n    opponent = \"O\"\n\n    while True:\n        print_board(board)\n        print(f\"Player {player}'s turn.\")\n\n        row, col = get_player_move(board)\n        board[row][col] = player\n\n        if check_winner(board, player):\n            print_board(board)\n            print(f\"Player {player} wins!\")\n            break\n\n        if is_board_full(board):\n            print_board(board)\n            print(\"It's a tie!\")\n            break\n\n        player, opponent = opponent, player  # Switch players\n\nif __name__ == \"__main__\":\n    play_tic_tac_toe()"
+    }
+}
