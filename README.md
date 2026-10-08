@@ -1,118 +1,68 @@
-# Multi-Agent System
+# Lex
 
-A sophisticated multi-agent system implementation that enables autonomous agents to collaborate, communicate, and solve complex tasks collectively.
+A planner, a coder and a reviewer that work on your project together, from the terminal or a local web UI.
 
-## 🌟 Overview
+![Lex web UI](docs/screenshot.png)
 
-This multi-agent system is designed to create a distributed problem-solving environment where multiple AI agents can work together seamentially. It supports dynamic agent interactions, task allocation, and coordinated decision-making processes.
+You describe a task. The **Planner** reads the project and writes a short plan. The **Coder** carries it out with real tools (read, search, edit, run commands). The **Reviewer** reads the diff and either approves it or sends it back with specific issues. You approve every file change and shell command unless you say otherwise.
 
-## ✨ Features
+## Install
 
-- **Autonomous Agents**: Multiple independent agents capable of making decisions
-- **Inter-Agent Communication**: Robust messaging system for agent interactions
-- **Task Distribution**: Dynamic task allocation and load balancing
-- **Scalable Architecture**: Easy to add new agents and functionalities
-- **Real-time Coordination**: Synchronized agent activities and resource management
-- **Fault Tolerance**: System resilience through agent redundancy
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.8 or higher
-- Required Python packages (install via pip):
-  ```bash
-  pip install -r requirements.txt
-  ```
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Shushant17711/AI-Agent-Lex.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd AI-Agent-Lex
-   ```
-
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## 💡 Usage
-
-1. Initialize the agent system:
-   ```python
-   from multi_agent import AgentSystem
-   
-   system = AgentSystem()
-   ```
-
-2. Create and deploy agents:
-   ```python
-   # Create specific agents
-   agent1 = system.create_agent('TaskManager')
-   agent2 = system.create_agent('ResourceHandler')
-   
-   # Start the system
-   system.start()
-   ```
-
-## 🎯 Examples
-
-```python
-# Example of agent communication
-agent1.send_message(agent2, {
-    'type': 'task_request',
-    'content': 'Process data batch'
-})
-
-# Example of task execution
-agent2.execute_task({
-    'task_type': 'data_processing',
-    'parameters': {'batch_size': 100}
-})
+```bash
+git clone https://github.com/Shushant17711/AI-Agent-Lex.git
+cd AI-Agent-Lex
+pip install -e .          # Python 3.10+
 ```
 
-## 🔧 Configuration
+Set a key (or put it in `.env`, see `.env.example`):
 
-Agents can be configured through the `config.yaml` file:
-
-```yaml
-agent_settings:
-  communication_protocol: 'TCP'
-  max_agents: 10
-  timeout: 30
+```bash
+export GEMINI_API_KEY=...            # default provider: Gemini
+# or any OpenAI-compatible endpoint (OpenAI, OpenRouter, Ollama, LM Studio, vLLM)
+export LEX_PROVIDER=openai LEX_BASE_URL=http://localhost:11434/v1 LEX_MODEL=qwen3-coder
 ```
 
-## 🤝 Contributing
+## Use
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+```bash
+lex "fix the failing tests"          # run in the current directory
+lex run -w ~/code/app "add a --json flag to the CLI"
+lex ui                               # web UI at http://127.0.0.1:8765
+lex history                          # past runs
+lex show <run-id>                    # replay one
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Useful flags: `--no-plan`, `--no-review`, `--auto-edit` (apply edits without asking), `-y` (edits and commands without asking), `--read-only`, `-v`.
 
-## 📝 License
+## Safety
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- Agents can only touch files inside the workspace. Path escapes and symlinks out are refused.
+- Edits and commands need your approval by default. Destructive commands (`rm -rf`, `sudo`, `git push --force`, `curl … | sh`, …) always ask, even in auto mode.
+- Commands run non-interactively with a timeout; the whole process group is killed on timeout or Stop.
+- The web UI binds to localhost, needs the access token printed in your terminal, and checks the Host and Origin headers.
 
-## 🔗 Contact
+## Configuration
 
-Shushant17711 - [GitHub Profile](https://github.com/Shushant17711)
+Precedence: defaults < `~/.config/lex/config.toml` < `<workspace>/lex.toml` < env vars < CLI flags.
 
-Project Link: [https://github.com/Shushant17711/AI-Agent-Lex](https://github.com/Shushant17711/AI-Agent-Lex)
+```toml
+provider = "gemini"
+model = "gemini-3.5-flash"
+approve_writes = "ask"     # ask | auto | deny
+approve_commands = "ask"
+max_turns = 40
+review_rounds = 2
+```
 
-## 🙏 Acknowledgments
+## Development
 
-- Thanks to all contributors who have helped shape this multi-agent system
-- Inspired by modern distributed systems and AI agent architectures
-- Built with ❤️ using Python and advanced AI concepts
+```bash
+pip install -e '.[dev]'
+pytest
+```
 
----
-Last Updated: 2025-05-18
+Tests drive the full planner → coder → reviewer loop with a scripted provider, so no API key is needed.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Lex</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312100d'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-style='italic' font-size='20' text-anchor='middle' fill='%23f2a93b'%3EL%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="brand"><span class="mark">Lex</span><span class="tag">planner · coder · reviewer</span></div>
+    <div class="where" id="workspace" title="Workspace"></div>
+    <div class="top-right">
+      <span class="chip" id="model-chip" title="Model"></span>
+      <span class="conn" id="conn" title="Connection"><i></i><span>connecting</span></span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Left: composer, plan, history -->
+    <aside class="pane left">
+      <form class="composer" id="composer" autocomplete="off">
+        <label class="eyebrow" for="task">Task</label>
+        <textarea id="task" rows="5" placeholder="Describe what you want built, fixed or explained…"></textarea>
+        <div class="opts">
+          <label class="toggle"><input type="checkbox" id="opt-plan" checked><span></span>Plan first</label>
+          <label class="toggle"><input type="checkbox" id="opt-review" checked><span></span>Review</label>
+        </div>
+        <div class="opts selects">
+          <label>Edits
+            <select id="opt-writes"><option value="ask">ask</option><option value="auto">auto</option><option value="deny">deny</option></select>
+          </label>
+          <label>Commands
+            <select id="opt-commands"><option value="ask">ask</option><option value="auto">auto</option><option value="deny">deny</option></select>
+          </label>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn primary" id="run-btn">Run <kbd>Ctrl ↵</kbd></button>
+          <button type="button" class="btn ghost danger hidden" id="stop-btn">Stop</button>
+        </div>
+        <p class="notice hidden" id="key-notice"></p>
+      </form>
+
+      <section class="plan" id="plan-section">
+        <h2 class="eyebrow">Plan</h2>
+        <p class="approach" id="approach">No plan yet.</p>
+        <ol class="steps" id="steps"></ol>
+      </section>
+
+      <section class="history">
+        <h2 class="eyebrow">Recent runs <button class="link" id="refresh-runs" title="Refresh">↻</button></h2>
+        <ul id="runs"></ul>
+      </section>
+    </aside>
+
+    <!-- Center: phase rail + timeline -->
+    <section class="pane center">
+      <nav class="rail" id="rail" aria-label="Agents">
+        <div class="node" data-agent="planner"><i></i><span>Planner</span></div>
+        <div class="wire"></div>
+        <div class="node" data-agent="coder"><i></i><span>Coder</span></div>
+        <div class="wire"></div>
+        <div class="node" data-agent="reviewer"><i></i><span>Reviewer</span></div>
+        <div class="meter" id="meter"></div>
+      </nav>
+      <div class="timeline" id="timeline">
+        <div class="empty" id="empty">
+          <h1>What are we <em>building</em>?</h1>
+          <p>Lex plans the work, writes the code and reviews it, in the folder above. You approve every edit and command unless you say otherwise.</p>
+          <div class="ideas" id="ideas">
+            <button type="button">Explain how this project is structured</button>
+            <button type="button">Add tests for the main module and make them pass</button>
+            <button type="button">Find and fix bugs in the error handling</button>
+            <button type="button">Write a README for this project</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: changes + files -->
+    <aside class="pane right">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="changes" role="tab">Changes <b id="change-count">0</b></button>
+        <button class="tab" data-tab="files" role="tab">Files</button>
+      </div>
+      <div class="tabpane" id="tab-changes">
+        <ul class="filelist" id="changes"><li class="muted">Nothing changed yet.</li></ul>
+      </div>
+      <div class="tabpane hidden" id="tab-files">
+        <ul class="tree" id="tree"></ul>
+      </div>
+      <div class="viewer hidden" id="viewer">
+        <div class="viewer-head"><span id="viewer-title"></span><button class="link" id="viewer-close" title="Close">✕</button></div>
+        <pre class="code" id="viewer-body"></pre>
+      </div>
+    </aside>
+  </main>
+
+  <div class="toast hidden" id="toast" role="status"></div>
+  <script src="/static/app.js" type="module"></script>
+</body>
+</html>
